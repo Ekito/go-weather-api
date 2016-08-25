@@ -1,6 +1,6 @@
 # Start from a Debian image with the latest version of Go installed
-# and a workspace (GOPATH) configured at /go.
 #FROM golang
+# extend version with glide
 FROM golang_glide
 
 # Copy the local package files to the container's workspace.
@@ -9,19 +9,21 @@ ADD /src/weather_api/glide.yaml /go/src/app/glide.yaml
 
 WORKDIR /go/src/app
 
-# Build the outyet command inside the container.
-# (You may fetch or manage dependencies here,
-# either manually or with a tool like "godep".)
+# get dependencies
 RUN glide install
 
 ENV GOBIN /go/bin
+# make bin
 RUN go install main.go
 
-# Run the outyet command by default when the container starts.
+# Add user (for heroku)
 RUN useradd -m myuser
 USER myuser
 
-# Document that the service listens on port 8080.
+# Heroku provide PORT environment variable 
 # EXPOSE 8080
+
+# GEOCODE_KEY : google maps api key
+# WEATHER_KEY : wundeground api key
 
 CMD /go/bin/main
