@@ -1,7 +1,7 @@
 # Start from a Debian image with the latest version of Go installed
 #FROM golang
 # extend version with glide
-FROM golang_glide
+FROM arnaudgiuliani/golang-glide
 
 # Copy the local package files to the container's workspace.
 ADD /src/weather_api/main.go /go/src/app/main.go
